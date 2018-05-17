@@ -6,9 +6,15 @@ from django.core.validators import MaxValueValidator
 class Content(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
-    image = models.ImageField(upload_to=None,height_field=None,width_field=None,max_length=100)
+    image = models.CharField(max_length=200, null=True)
+    #image = models.ImageField(upload_to='images',height_field=None,width_field=None,max_length=100)
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
 
     def publish(self):
+        self.published_date = timezone.now()
         self.save()
 
     def __str__(self):
@@ -17,7 +23,17 @@ class Content(models.Model):
 class Skill(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
+    image = models.CharField(max_length=200, null=True)
 
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+        
     def __str__(self):
         return self.title
 

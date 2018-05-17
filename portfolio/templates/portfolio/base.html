@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">            
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> 
+        <title>Portfolio</title>
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Portfolio</a></h1>
+            
+        </div>
+            
+        
+        <div class="content container">
+            <h2 class="login-bottone">
+                {% if not user.is_authenticated %}
+                    <a class="btn btn-default" href="{% url 'login' %}">Login</a>
+                    {% else %}
+                    <p class="top-menu">Ciao, {{ user.username }} <br/><small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+                {% endif %}
+            </h2>
+            <div class="row">
+                {% block content %}
+                {% endblock %}
+            </div>
+            <div class="row">
+                {% block skill %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

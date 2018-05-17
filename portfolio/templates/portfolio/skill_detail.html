@@ -1,0 +1,26 @@
+{% extends 'portfolio/base.html' %}
+{% block skill %}
+    <div class="col-xs-12 post">
+        {% if user.is_authenticated %}
+            {% if not skill.published_date %}
+                <a class="btn btn-default" href="{% url 'skill_publish' pk=skill.pk %}">Pubblica</a>
+            {% endif %}
+            <a class="btn btn-default" href="{% url 'skill_edit' pk=skill.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>        
+            <a class="btn btn-default" href="{% url 'skill_remove' pk=skill.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% endif %}
+        <h1>{{ skill.title }}</h1>
+        <p>{{ skill.text }}</p>
+        {% for skill_item in skill_items %}
+            
+            <div class="col-xs-4 post">
+                <h2>{{ skill_item.name}}</h2>
+                <h3 style="color:rgb(5, 133, 252);">{{ skill_item.perc_value}}%</h3>
+                <div style="height:30px; width:100%; border: solid 1px rgb(77, 76, 76); border-radius:5px; ">
+                    <div style="height:28px; width:{{ skill_item.perc_value}}%; background-color:rgb(5, 133, 252); border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;"></div>
+                </div>
+            </div>
+            
+        {% endfor %}
+    </div>
+{% endblock %}

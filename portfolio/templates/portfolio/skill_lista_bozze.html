@@ -1,0 +1,11 @@
+{% extends 'portfolio/base.html' %}
+
+{% block skill %}
+    {% for skill in skills %}
+        <div class="post">
+            <p class="date">created: {{ skill.created_date|date:'d-m-Y' }}</p>
+            <h1><a href="{% url 'skill_detail' pk=skill.pk %}">{{ skill.title }}</a></h1>
+            <p>{{ skill.text|truncatechars:200 }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'portfolio/base.html' %}
+
+
+{% block content %}
+    <h1>Works</h1>
+    <h2>
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'content_new' %}">Crea Nuovo Contenuto</a>            
+            <a class="btn btn-default" href="{% url 'content_lista_bozze' %}">Lista Bozze Contenuti</a>
+        {% endif %}
+    </h2>
+    {% for content in contents %}
+        <div class="col-xs-6 post">
+            <h2><a href="{% url 'content_detail' pk=content.pk %}">{{ content.title }}</a></h2>
+            <img src="static/{{content.image}}" width="100%">
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block skill %}
+    <h1>Skills</h1>
+    <h2>
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'skill_new' %}">Crea Nuova Skill</a>            
+            <a class="btn btn-default" href="{% url 'skill_lista_bozze' %}">Lista Bozze Skills</a>
+        {% endif %}
+    </h2>
+    {% for skill in skills %}
+        
+        <div class="col-xs-6 post">
+            <h2><a href="{% url 'skill_detail' pk=skill.pk %}">{{ skill.title }}</a></h2>
+            <img src="static/{{skill.image}}" width="100%">
+        </div>
+    {% endfor %}
+{% endblock %}
+            

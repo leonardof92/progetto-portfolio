@@ -1,0 +1,15 @@
+{% extends 'portfolio/base.html' %}
+{% block content %}
+    <div class="col-xs-12 post">
+        {% if user.is_authenticated %}
+            {% if not content.published_date %}
+                <a class="btn btn-default" href="{% url 'content_publish' pk=content.pk %}">Pubblica</a>
+            {% endif %}
+            <a class="btn btn-default" href="{% url 'content_edit' pk=content.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>        
+            <a class="btn btn-default" href="{% url 'content_remove' pk=content.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% endif %}
+        <h1>{{ content.title }}</h1>
+        <p>{{ content.text }}</p>
+        <img src="/static/{{content.image}}" width="100%">
+    </div>
+{% endblock %}
