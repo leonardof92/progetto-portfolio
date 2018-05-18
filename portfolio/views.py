@@ -41,7 +41,7 @@ def content_new(request):
 def content_edit(request, pk):
     content = get_object_or_404(Content, pk=pk)
     if request.method == "POST":
-        form = ContentForm(request.POST, instance=content)
+        form = ContentForm(request.POST, request.FILES, instance=content)
         if form.is_valid():
             content = form.save()
             #content = form.save(commit=False)
