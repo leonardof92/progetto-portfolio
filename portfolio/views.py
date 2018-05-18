@@ -114,3 +114,39 @@ def skill_remove(request, pk):
     skill = get_object_or_404(Skill, pk=pk)
     skill.delete()
     return redirect('content_list')
+
+@login_required
+def skill_item_new(request):
+    if request.method == "POST":
+        form = Skill_ItemForm(request.POST)
+        if form.is_valid():
+            skill = form.save()
+            #content = form.save(commit=False)
+            #content.published_date = timezone.now()
+            #content.save()
+            return redirect('content_list')
+    else:
+        form = Skill_ItemForm()
+    return render(request,'portfolio/skill_item_edit.html',{'form':form})
+
+@login_required
+def skill_item_remove(request, pk):
+    skill_item = get_object_or_404(Skill_Item, pk=pk)
+    #skill_items = Skill_Item.objects.filter(skill_ref=skill)
+    skill_item.delete()
+    return redirect('content_list')
+
+@login_required
+def skill_item_edit(request, pk):
+    skill_item = get_object_or_404(Skill_Item, pk=pk)
+    if request.method == "POST":
+        form = Skill_ItemForm(request.POST, instance=skill_item)
+        if form.is_valid():
+            skill_item = form.save()
+            #content = form.save(commit=False)
+            #content.published_date = timezone.now()
+            #content.save()
+            return redirect('content_list')
+    else:
+        form = Skill_ItemForm(instance=skill_item)
+    return render(request,'portfolio/skill_item_edit.html',{'form':form})
