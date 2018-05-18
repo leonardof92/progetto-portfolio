@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Content, Skill, Skill_Item
 from django.utils import timezone
-from .forms import ContentForm, SkillForm
+from .forms import ContentForm, SkillForm, Skill_ItemForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def content_list(request):
     contents = Content.objects.filter(published_date__lte=timezone.now()).order_by('title')
-    skills = Skill.objects.order_by('title')
+    skills = Skill.objects.filter(published_date__lte=timezone.now()).order_by('title')
     skill_items = Skill_Item.objects.order_by('perc_value')
     return render(request, 'portfolio/content_list.html', {'contents':contents, 'skills':skills, 'skill_items':skill_items })
 
@@ -113,4 +113,4 @@ def skill_publish(request, pk):
 def skill_remove(request, pk):
     skill = get_object_or_404(Skill, pk=pk)
     skill.delete()
-    return redirect('skill_list')
+    return redirect('content_list')
