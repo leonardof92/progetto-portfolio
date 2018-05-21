@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 def content_list(request):
     contents = Content.objects.filter(published_date__lte=timezone.now()).order_by('title')
     skills = Skill.objects.filter(published_date__lte=timezone.now()).order_by('title')
-    skill_items = Skill_Item.objects.order_by('perc_value')
-    return render(request, 'portfolio/content_list.html', {'contents':contents, 'skills':skills, 'skill_items':skill_items })
+    #skill_items = Skill_Item.objects.order_by('-perc_value')
+    return render(request, 'portfolio/content_list.html', {'contents':contents, 'skills':skills })
 
 def content_detail(request,pk):
     content = get_object_or_404(Content, pk=pk)
@@ -19,7 +19,7 @@ def content_detail(request,pk):
 
 def skill_detail(request,pk):
     skill = get_object_or_404(Skill, pk=pk)
-    skill_items = Skill_Item.objects.filter(skill_ref=skill).order_by('perc_value')
+    skill_items = Skill_Item.objects.filter(skill_ref=skill).order_by('-perc_value')
     return render(request, 'portfolio/skill_detail.html', {'skill':skill, 'skill_items':skill_items } )
 
 
@@ -29,9 +29,7 @@ def content_new(request):
         form = ContentForm(request.POST)
         if form.is_valid():
             content = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
+            
             return redirect('content_detail', pk=content.pk)
     else:
         form = ContentForm()
@@ -44,9 +42,7 @@ def content_edit(request, pk):
         form = ContentForm(request.POST, request.FILES, instance=content)
         if form.is_valid():
             content = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
+           
             return redirect('content_detail', pk=content.pk)
     else:
         form = ContentForm(instance=content)
@@ -75,9 +71,7 @@ def skill_new(request):
         form = SkillForm(request.POST)
         if form.is_valid():
             skill = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
+            
             return redirect('skill_detail', pk=skill.pk)
     else:
         form = SkillForm()
@@ -90,9 +84,7 @@ def skill_edit(request, pk):
         form = SkillForm(request.POST, instance=skill)
         if form.is_valid():
             skill = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
+            
             return redirect('skill_detail', pk=skill.pk)
     else:
         form = SkillForm(instance=skill)
@@ -116,37 +108,33 @@ def skill_remove(request, pk):
     return redirect('content_list')
 
 @login_required
-def skill_item_new(request):
+def skill_item_new(request, pk):
+    skill = get_object_or_404(Skill, pk=pk)
     if request.method == "POST":
         form = Skill_ItemForm(request.POST)
         if form.is_valid():
-            skill = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
-            return redirect('content_list')
+            skill_item = form.save()
+            return redirect('skill_detail', pk=skill.pk)
     else:
         form = Skill_ItemForm()
     return render(request,'portfolio/skill_item_edit.html',{'form':form})
 
 @login_required
-def skill_item_remove(request, pk):
-    skill_item = get_object_or_404(Skill_Item, pk=pk)
-    #skill_items = Skill_Item.objects.filter(skill_ref=skill)
+def skill_item_remove(request, pk, pk_item):
+    skill_item = get_object_or_404(Skill_Item, pk=pk_item)
+    skill = get_object_or_404(Skill, pk=pk)
     skill_item.delete()
-    return redirect('content_list')
+    return redirect('skill_detail', pk=pk)
 
 @login_required
-def skill_item_edit(request, pk):
-    skill_item = get_object_or_404(Skill_Item, pk=pk)
+def skill_item_edit(request, pk, pk_item):
+    skill = get_object_or_404(Skill, pk=pk)
+    skill_item = get_object_or_404(Skill_Item, pk=pk_item)
     if request.method == "POST":
         form = Skill_ItemForm(request.POST, instance=skill_item)
         if form.is_valid():
             skill_item = form.save()
-            #content = form.save(commit=False)
-            #content.published_date = timezone.now()
-            #content.save()
-            return redirect('content_list')
+            return redirect('skill_detail', pk=pk)
     else:
         form = Skill_ItemForm(instance=skill_item)
     return render(request,'portfolio/skill_item_edit.html',{'form':form})

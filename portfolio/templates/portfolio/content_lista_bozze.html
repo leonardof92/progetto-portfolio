@@ -1,11 +1,12 @@
 {% extends 'portfolio/base.html' %}
 
 {% block content %}
+    <h1>Contents - Bozze</h1>
     {% for content in contents %}
         <div class="post">
-            <p class="date">created: {{ content.created_date|date:'d-m-Y' }}</p>
-            <h1><a href="{% url 'content_detail' pk=content.pk %}">{{ content.title }}</a></h1>
+            <h2><a href="{% url 'content_detail' pk=content.pk %}">{{ content.title }}</a></h2>
             <p>{{ content.text|truncatechars:200 }}</p>
+            <p class="date">created: {{ content.created_date|date:'d-m-Y' }}</p>
         </div>
     {% endfor %}
 {% endblock %}
