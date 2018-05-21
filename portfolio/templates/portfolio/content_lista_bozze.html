@@ -1,6 +1,7 @@
 {% extends 'portfolio/base.html' %}
 
 {% block content %}
+    <p class="torna-indietro"><a class="btn btn-default" href="{% url 'content_list' %}"><span class="glyphicon glyphicon-arrow-left"></span></a></p>    
     <h1>Contents - Bozze</h1>
     {% for content in contents %}
         <div class="post">

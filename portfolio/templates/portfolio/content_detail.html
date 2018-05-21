@@ -8,6 +8,8 @@
             <a class="btn btn-default" href="{% url 'content_edit' pk=content.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>        
             <a class="btn btn-default" href="{% url 'content_remove' pk=content.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
+        
+        <p class="torna-indietro"><a class="btn btn-default" href="{% url 'content_list' %}"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
         <h1>{{ content.title }}</h1>
         <p>{{ content.text }}</p>
         <img src="media/{{content.image}}" width="100%">
