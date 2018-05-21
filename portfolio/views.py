@@ -113,18 +113,19 @@ def skill_item_new(request, pk):
     if request.method == "POST":
         form = Skill_ItemForm(request.POST)
         if form.is_valid():
-            skill_item = form.save()
+            '''
+            post	=	form.save(commit=False)
+            post.author	=	request.user
+            post.published_date	=	timezone.now()
+            post.save()
+            '''
+            skill_item = form.save(commit=False)
+            skill_item.skill_ref = skill
+            skill_item.save()
             return redirect('skill_detail', pk=skill.pk)
     else:
         form = Skill_ItemForm()
     return render(request,'portfolio/skill_item_edit.html',{'form':form})
-
-@login_required
-def skill_item_remove(request, pk, pk_item):
-    skill_item = get_object_or_404(Skill_Item, pk=pk_item)
-    skill = get_object_or_404(Skill, pk=pk)
-    skill_item.delete()
-    return redirect('skill_detail', pk=pk)
 
 @login_required
 def skill_item_edit(request, pk, pk_item):
@@ -138,3 +139,10 @@ def skill_item_edit(request, pk, pk_item):
     else:
         form = Skill_ItemForm(instance=skill_item)
     return render(request,'portfolio/skill_item_edit.html',{'form':form})
+
+@login_required
+def skill_item_remove(request, pk, pk_item):
+    skill_item = get_object_or_404(Skill_Item, pk=pk_item)
+    skill = get_object_or_404(Skill, pk=pk)
+    skill_item.delete()
+    return redirect('skill_detail', pk=pk)

@@ -14,4 +14,4 @@ class SkillForm(forms.ModelForm):
 class Skill_ItemForm(forms.ModelForm):
     class Meta:
         model = Skill_Item
-        fields = ('name','perc_value','skill_ref')
+        fields = ('name','perc_value')
